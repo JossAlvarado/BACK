@@ -51,76 +51,74 @@ app.post('/shoes', (req, res) => {
   );
 });
 
- // Obtener todos los usuarios
+// Obtener todos los usuarios
 app.get('/users', (req, res) => {
-    db.query('SELECT * FROM users', (err, result) => {
-      if (err) {
-        res.status(500).json({ message: err.message });
-      } else {
-        res.json(result);
-      }
-    });
+  db.query('SELECT * FROM users', (err, result) => {
+    if (err) {
+      res.status(500).json({ message: err.message });
+    } else {
+      res.json(result);
+    }
   });
-  
-  // Obtener un usuario por su ID
-  app.get('/users/:userId', (req, res) => {
-    const userId = req.params.userId;
-    db.query('SELECT * FROM users WHERE id = ?', [userId], (err, result) => {
-      if (err) {
-        res.status(500).json({ message: err.message });
-      } else {
-        res.json(result[0]);
-      }
-    });
+});
+
+// Obtener un usuario por su ID
+app.get('/users/:userId', (req, res) => {
+  const userId = req.params.userId;
+  db.query('SELECT * FROM users WHERE id = ?', [userId], (err, result) => {
+    if (err) {
+      res.status(500).json({ message: err.message });
+    } else {
+      res.json(result[0]);
+    }
   });
-  
-  // Agregar un nuevo usuario
-  app.post('/users', (req, res) => {
-    const { nombre, apellidos, correo, contraseña } = req.body;
+});
+// Agregar un nuevo usuario
+app.post('/users', (req, res) => {
+    const { id, nombre, apellidos, correo, contraseña } = req.body;
     db.query(
-      'INSERT INTO users (nombre, apellidos, correo, contraseña) VALUES (?, ?, ?, ?)',
-      [nombre, apellidos, correo, contraseña],
+      'INSERT INTO users (id, nombre, apellidos, correo, contraseña) VALUES (?, ?, ?, ?, ?)',
+      [id, nombre, apellidos, correo, contraseña],
       (err, result) => {
         if (err) {
           res.status(400).json({ message: err.message });
         } else {
-          res.status(201).json(result);
+          res.status(201).json({ message: 'Usuario registrado exitosamente' });
         }
       }
     );
   });
   
-  // Actualizar un usuario por su ID
-  app.put('/users/:userId', (req, res) => {
-    const userId = req.params.userId;
-    const { nombre, apellidos, correo, contraseña } = req.body;
-    db.query(
-      'UPDATE users SET nombre = ?, apellidos = ?, correo = ?, contraseña = ? WHERE id = ?',
-      [nombre, apellidos, correo, contraseña, userId],
-      (err, result) => {
-        if (err) {
-          res.status(500).json({ message: err.message });
-        } else {
-          res.json(result);
-        }
-      }
-    );
-  });
-  
-  // Eliminar un usuario por su ID
-  app.delete('/users/:userId', (req, res) => {
-    const userId = req.params.userId;
-    db.query('DELETE FROM users WHERE id = ?', [userId], (err, result) => {
+// Actualizar un usuario por su ID
+app.put('/users/:userId', (req, res) => {
+  const userId = req.params.userId;
+  const { nombre, apellidos, correo, contraseña } = req.body;
+  db.query(
+    'UPDATE users SET nombre = ?, apellidos = ?, correo = ?, contraseña = ? WHERE id = ?',
+    [nombre, apellidos, correo, contraseña, userId],
+    (err, result) => {
       if (err) {
         res.status(500).json({ message: err.message });
       } else {
         res.json(result);
       }
-    });
+    }
+  );
+});
+
+// Eliminar un usuario por su ID
+app.delete('/users/:userId', (req, res) => {
+  const userId = req.params.userId;
+  db.query('DELETE FROM users WHERE id = ?', [userId], (err, result) => {
+    if (err) {
+      res.status(500).json({ message: err.message });
+    } else {
+      res.json(result);
+    }
   });
-  
-  // Iniciar el servidor
-  app.listen(port, () => {
-    console.log(`Servidor en ejecución en http://localhost:${port}`);
-  });
-  
+});
+
+// Iniciar el servidor
+app.listen(port, () => {
+  console.log(`Servidor en ejecución en http://localhost:${port}`);
+});
