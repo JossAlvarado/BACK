@@ -51,7 +51,7 @@ app.post('/shoes', (req, res) => {
   );
 });
 
-// Obtener todos los usuarios
+ // Obtener todos los usuarios
 app.get('/users', (req, res) => {
     db.query('SELECT * FROM users', (err, result) => {
       if (err) {
@@ -63,8 +63,8 @@ app.get('/users', (req, res) => {
   });
   
   // Obtener un usuario por su ID
-  app.get('/users/:id', (req, res) => {
-    const userId = req.params.id;
+  app.get('/users/:userId', (req, res) => {
+    const userId = req.params.userId;
     db.query('SELECT * FROM users WHERE id = ?', [userId], (err, result) => {
       if (err) {
         res.status(500).json({ message: err.message });
@@ -91,8 +91,8 @@ app.get('/users', (req, res) => {
   });
   
   // Actualizar un usuario por su ID
-  app.put('/users/:id', (req, res) => {
-    const userId = req.params.id;
+  app.put('/users/:userId', (req, res) => {
+    const userId = req.params.userId;
     const { nombre, apellidos, correo, contraseña } = req.body;
     db.query(
       'UPDATE users SET nombre = ?, apellidos = ?, correo = ?, contraseña = ? WHERE id = ?',
@@ -108,8 +108,8 @@ app.get('/users', (req, res) => {
   });
   
   // Eliminar un usuario por su ID
-  app.delete('/users/:id', (req, res) => {
-    const userId = req.params.id;
+  app.delete('/users/:userId', (req, res) => {
+    const userId = req.params.userId;
     db.query('DELETE FROM users WHERE id = ?', [userId], (err, result) => {
       if (err) {
         res.status(500).json({ message: err.message });
